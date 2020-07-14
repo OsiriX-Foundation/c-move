@@ -1,0 +1,77 @@
+version: '3.1'
+#https://github.com/docker-library/postgres/issues/151
+services:
+
+  ldap:
+    container_name: ldap
+    image: dcm4che/slapd-dcm4chee:2.4.50-22.3
+    environment:
+      - AE_TITLE=TESTCMOVE
+      - DICOM_PORT=11113
+      - STORAGE_DIR=/storage/fs1
+    volumes:
+      - dcm4chee-ldap-ldap:/var/lib/ldap
+      - dcm4chee-ldap-slapdd:/etc/ldap/slapd.d
+    restart: on-failure
+    networks:
+      - pacs_network
+
+  pacsdb:
+    container_name: pacsdb
+    image: dcm4che/postgres-dcm4chee:12.2-22
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    environment:
+      - POSTGRES_DB=pacsdb
+      - POSTGRES_USER=pacs
+      - POSTGRES_PASSWORD=pacs
+      - STORAGE_DIR=/storage/fs1
+    volumes:
+      - dcm4chee-db-data:/var/lib/postgresql/data
+    restart: on-failure
+    networks:
+      - pacs_network
+    
+  arc:
+    container_name: arc
+    image: dcm4che/dcm4chee-arc-psql:5.22.3
+    ports:
+      - "5080:8080"
+      - "5443:8443"
+      - "5990:9990"
+      - "5787:8787"
+      - "11113:11113"
+      - "5575:2575"
+    environment:
+      WILDFLY_CHOWN: /storage /opt/wildfly/standalone
+      WILDFLY_WAIT_FOR: ldap:389 pacsdb:5432
+      JAVA_OPTS: -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n
+      POSTGRES_DB: pacsdb
+      POSTGRES_USER: pacs
+      POSTGRES_PASSWORD: pacs
+      POSTGRES_HOST: pacsdb
+      STORAGE_DIR: /storage/fs1
+      LDAP_URL: ldap://ldap:389
+    depends_on:
+      - ldap
+      - pacsdb
+    volumes:
+      - dcm4chee-arc-wildfly:/opt/wildfly/standalone
+      - /dcm4chee-arc/storage:/storage
+    restart: on-failure
+    networks:
+      - pacs_network
+
+  
+volumes:
+  dcm4chee-ldap-ldap:
+  dcm4chee-ldap-slapdd:
+  dcm4chee-db-data:
+  dcm4chee-arc-wildfly:
+
+networks:
+  pacs_network:
+    external:
+      name: pacs_network
