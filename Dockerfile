@@ -1,7 +1,7 @@
 FROM python:3
 
-ADD cmove.py cmove.py
+ADD combo.py combo.py
 
 RUN pip3 install -U pynetdicom
 
-ENTRYPOINT ["python3", "cmove.py"]
+ENTRYPOINT ["python3", "combo.py"]
