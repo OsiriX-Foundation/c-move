@@ -87,8 +87,9 @@ if assoc.is_established and assoc2.is_established:
                     elif status2.Status == 0x0000:
                         print('Success')
                         print('Number of Completed Sub-operations ' + str(status2.get(0x1021).value))
-                        f.write('Number of Failed Sub-operations ' + str(status2.get(0x1022).value))
-                        f.write('Number of Warning Sub-operations ' + str(status2.get(0x1023).value))
+                        f.write('Number of Completed Sub-operations ' + str(status2.get(0x1021).value) + ' ')
+                        f.write('Number of Failed Sub-operations ' + str(status2.get(0x1022).value) + ' ')
+                        f.write('Number of Warning Sub-operations ' + str(status2.get(0x1023).value) + ' ')
                         if status2.get(0x1022).value != 0 or status2.get(0x1023).value != 0:
                             f.write(date.strftime("%Y-%m-%d") +" "+ study_uid + " error")
                             f.write('Number of Failed Sub-operations ' + str(status2.get(0x1022).value))
