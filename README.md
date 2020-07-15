@@ -8,13 +8,13 @@
   4. Add AETitle of the 2nd pacs in the 1st pacs
   5. http://localhost:8080/dcm4chee-arc/ui2/#/device/aelist
   6. Click on +New AET
-  * Hostname arc
-  * Port 11113
-  * AE Title TESTCMOVE
+     * Hostname arc
+     * Port 11113
+     * AE Title TESTCMOVE
   7. Test Connection
-  * Calling AET: DCM4CHEE
-  * TEST
-  * If OK => APPLY
+     * Calling AET: DCM4CHEE
+     * TEST
+     * If OK => APPLY
   8. Run python script (path docker/python) `docker-compose up`
   9. Verify if there is data in the second pacs (localhost:5080/dcm4chee-arc/ui2/#/study/study) select the aetitle TESTCMOVE click on SUBMIT and OK
   10 Logs are available here : `docker/python/logs`
