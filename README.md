@@ -11,10 +11,10 @@
   * Hostname arc
   * Port 11113
   * AE Title TESTCMOVE
-  10. Test Connection
-  11. Calling AET: DCM4CHEE
-  12. TEST
-  13. If OK => APPLY
-  14. Run python script (path docker/python) `docker-compose up`
-  15. Verify if there is data in the second pacs (localhost:5080/dcm4chee-arc/ui2/#/study/study) select the aetitle TESTCMOVE click on SUBMIT and OK
-  16. Logs are available here : `docker/python/logs`
+  7. Test Connection
+  * Calling AET: DCM4CHEE
+  * TEST
+  * If OK => APPLY
+  8. Run python script (path docker/python) `docker-compose up`
+  9. Verify if there is data in the second pacs (localhost:5080/dcm4chee-arc/ui2/#/study/study) select the aetitle TESTCMOVE click on SUBMIT and OK
+  10 Logs are available here : `docker/python/logs`
