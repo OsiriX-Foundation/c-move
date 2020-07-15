@@ -10,6 +10,7 @@ import sys
 
 
 if len(sys.argv) == 7:
+    print("set env")
     s = str(sys.argv[1]).split("-")
     start_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
     s = str(sys.argv[2]).split("-")
@@ -20,8 +21,10 @@ if len(sys.argv) == 7:
     destination_pacs_ae_title = str.encode(sys.argv[6])
 elif len(sys.argv) != 1:
     print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <source_pacs_ae_title>")
+    print(sys.argv)
     exit(2)
 else:
+    print("default value")
     start_date = datetime.datetime(1999, 11, 15)
     end_date = datetime.datetime(2006, 12, 31)
     source_pacs_ip = '172.18.32.108'
