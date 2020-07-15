@@ -16,5 +16,5 @@
      * TEST
      * If OK => APPLY
   8. Run python script (path docker/python) `docker-compose up`
-  9. Verify if there is data in the second pacs (localhost:5080/dcm4chee-arc/ui2/#/study/study) select the aetitle TESTCMOVE click on SUBMIT and OK
+  9. Verify if there is data in the second pacs (http://localhost:5080/dcm4chee-arc/ui2/#/study/study) select the aetitle TESTCMOVE click on SUBMIT and OK
   10. Logs are available here : `docker/python/logs`
