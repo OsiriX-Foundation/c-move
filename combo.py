@@ -22,7 +22,7 @@ if len(sys.argv) == 7:
     source_pacs_ae_title = str.encode(sys.argv[5])
     destination_pacs_ae_title = str.encode(sys.argv[6])
 elif len(sys.argv) != 1:
-    print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <source_pacs_ae_title>")
+    print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>")
     exit(2)
 else:
     start_date = datetime.datetime(1999, 11, 15)
