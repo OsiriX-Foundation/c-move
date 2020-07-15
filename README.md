@@ -18,3 +18,9 @@
   8. Run python script (path docker/python) `docker-compose up`
   9. Verify if there is data in the second pacs (http://localhost:5080/dcm4chee-arc/ui2/#/study/study) select the aetitle TESTCMOVE click on SUBMIT and OK
   10. Logs are available here : `docker/python/logs`
+
+## How use with another pacs
+
+  1. Edit command in docker/python/docker-compose.yml <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>
+  2. Run python script (path docker/python) `docker-compose up`
+  3. Logs are available here : `docker/python/logs`
