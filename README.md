@@ -1,6 +1,6 @@
 # c-move
 
-# How to test
+## How to test
 
   1. Cretate a docker network `docker network create pacs_network`
   2. Run the 2 dcm4che pacs (path docker/dcm4chee and docker/dcm4chee2)`docker-compose up`
