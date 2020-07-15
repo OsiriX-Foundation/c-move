@@ -8,9 +8,9 @@
   4. Add AETitle of the 2nd pacs in the 1st pacs
   5. http://localhost:8080/dcm4chee-arc/ui2/#/device/aelist
   6. Click on +New AET
-  7. Hostname arc
-  8. Port 11113
-  9. AE Title TESTCMOVE
+  * Hostname arc
+  * Port 11113
+  * AE Title TESTCMOVE
   10. Test Connection
   11. Calling AET: DCM4CHEE
   12. TEST
