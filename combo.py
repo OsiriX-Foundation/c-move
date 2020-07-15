@@ -7,10 +7,12 @@ from dateutil.rrule import rrule, DAILY
 
 import datetime
 import sys
+import functools
+
+print = functools.partial(print, flush=True)
 
 
 if len(sys.argv) == 7:
-    print("set env")
     s = str(sys.argv[1]).split("-")
     start_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
     s = str(sys.argv[2]).split("-")
@@ -21,13 +23,11 @@ if len(sys.argv) == 7:
     destination_pacs_ae_title = str.encode(sys.argv[6])
 elif len(sys.argv) != 1:
     print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <source_pacs_ae_title>")
-    print(sys.argv)
     exit(2)
 else:
-    print("default value")
     start_date = datetime.datetime(1999, 11, 15)
     end_date = datetime.datetime(2006, 12, 31)
-    source_pacs_ip = '172.18.32.108'
+    source_pacs_ip = 'arc1'
     source_pacs_port = 11112
     source_pacs_ae_title = b'DCM4CHEE'
     destination_pacs_ae_title = b'TESTCMOVE'
@@ -35,7 +35,7 @@ else:
 print("************************")
 print("C-MOVE from " + start_date.strftime("%Y-%m-%d") + " to " + end_date.strftime("%Y-%m-%d"))
 print("source pacs { ip :" + source_pacs_ip + " port :" + str(source_pacs_port) + " ae_title :" + str(source_pacs_ae_title) + "}")
-print("destination pacs { ae_title :" + str(source_pacs_ae_title) + "}")
+print("destination pacs { ae_title :" + str(destination_pacs_ae_title) + "}")
 print("************************")
 
 #debug_logger()
@@ -59,7 +59,7 @@ assoc2 = ae2.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_
 if assoc.is_established and assoc2.is_established:
     for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
-        f = open("log"+date.strftime("%Y-%m")+".txt", "a")
+        f = open("logs/log"+date.strftime("%Y-%m")+".txt", "a")
 
         study_uid_lst = []
         #C-FIND

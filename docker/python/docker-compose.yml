@@ -8,6 +8,7 @@ services:
     restart: on-failure
     #command: 1999-11-10 2006-12-31 arc1 11112 DCM4CHEE TESTCMOVE
     command: ["1999-11-10", "2006-12-31", "arc1", "11112", "DCM4CHEE", "TESTCMOVE"]
+    #command: python3 combo.py
     networks:
       - pacs_network
 

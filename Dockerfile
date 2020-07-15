@@ -1,11 +1,11 @@
 FROM python:3
 
+RUN pip3 install -U pynetdicom &&\
+    pip3 install python-dateutil
+
 ADD combo.py combo.py
 
-RUN pip3 install -U pynetdicom
-RUN pip3 install python-dateutil
+RUN mkdir logs
 
-ENTRYPOINT python3 combo.py
-#CMD ["python3", "combo.py"]
-#CMD ["toto"]
-#CMD ["python3", "combo.py", "1999-11-10", "2006-12-31", "arc1", "11112", "DCM4CHEE", "TESTCMOVE"]
+
+ENTRYPOINT ["python3", "combo.py"]
