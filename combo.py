@@ -63,8 +63,8 @@ if assoc_c_find.is_established and assoc_c_move.is_established:
         for (status_c_find, identifier_c_find) in responses_c_find:
             if status_c_find.Status == 0xFF00:#Pending
                 print(date.strftime("%Y-%m-%d"))
-                print('\tstudyUID: ' + identifier.get('StudyInstanceUID'))
-                study_uid_lst.append(identifier.get('StudyInstanceUID'))
+                print('\tstudyUID: ' + identifier_c_find.get('StudyInstanceUID'))
+                study_uid_lst.append(identifier_c_find.get('StudyInstanceUID'))
 
 
         #C-MOVE
