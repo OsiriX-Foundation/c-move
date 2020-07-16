@@ -8,6 +8,7 @@ from dateutil.rrule import rrule, DAILY
 import datetime
 import sys
 import functools
+import os
 
 print = functools.partial(print, flush=True)
 
@@ -21,16 +22,10 @@ if len(sys.argv) == 7:
     source_pacs_port = int(sys.argv[4])
     source_pacs_ae_title = str.encode(sys.argv[5])
     destination_pacs_ae_title = str.encode(sys.argv[6])
-elif len(sys.argv) != 1:
+else:
     print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>")
     exit(2)
-else:
-    start_date = datetime.datetime(1999, 11, 15)
-    end_date = datetime.datetime(2006, 12, 31)
-    source_pacs_ip = 'arc1'
-    source_pacs_port = 11112
-    source_pacs_ae_title = b'DCM4CHEE'
-    destination_pacs_ae_title = b'TESTCMOVE'
+
 
 print("************************")
 print("C-MOVE from " + start_date.strftime("%Y-%m-%d") + " to " + end_date.strftime("%Y-%m-%d"))
@@ -112,3 +107,10 @@ if assoc.is_established and assoc2.is_established:
     assoc.release()
 else:
     print('Association rejected, aborted or never connected')
+
+f = open("logs/empty_months.txt", "a")
+for file in os.listdir("/logs"):
+    if file.startswith("log") and file.endswith(".txt") and os.stat("/logs/" + file).st_size == 0:
+        f.write(file.replace("log","").replace(".txt","") + "\r\n")
+        os.remove("/logs/" + file)
+f.close()
