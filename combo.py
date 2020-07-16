@@ -36,32 +36,32 @@ print("************************")
 #debug_logger()
 
 
-ae = AE()
-ae.add_requested_context(StudyRootQueryRetrieveInformationModelFind)
+ae_c_find = AE()
+ae_c_find.add_requested_context(StudyRootQueryRetrieveInformationModelFind)
 
-ae2 = AE()
-ae2.add_requested_context(StudyRootQueryRetrieveInformationModelMove)
+ae_c_move = AE()
+ae_c_move.add_requested_context(StudyRootQueryRetrieveInformationModelMove)
 
 # Create our Identifier (query) dataset
-ds = Dataset()
-ds.QueryRetrieveLevel = 'STUDY'
-ds.StudyInstanceUID = ''
+ds_c_find = Dataset()
+ds_c_find.QueryRetrieveLevel = 'STUDY'
+ds_c_find.StudyInstanceUID = ''
 
 # Associate with the peer AE at IP 127.0.0.1 and port 11112
 
-assoc = ae.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
-assoc2 = ae2.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
-if assoc.is_established and assoc2.is_established:
+assoc_c_find = ae_c_find.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
+assoc_c_move = ae_c_move.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
+if assoc_c_find.is_established and assoc_c_move.is_established:
     for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
         f = open("logs/log"+date.strftime("%Y-%m")+".txt", "a")
 
         study_uid_lst = []
         #C-FIND
-        ds.StudyDate =  date.strftime("%Y%m%d")
-        responses = assoc.send_c_find(ds, StudyRootQueryRetrieveInformationModelFind)
-        for (status, identifier) in responses:
-            if status.Status == 0xFF00:#Pending
+        ds_c_find.StudyDate =  date.strftime("%Y%m%d")
+        responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
+        for (status_c_find, identifier_c_find) in responses_c_find:
+            if status_c_find.Status == 0xFF00:#Pending
                 print(date.strftime("%Y-%m-%d"))
                 print('\tstudyUID: ' + identifier.get('StudyInstanceUID'))
                 study_uid_lst.append(identifier.get('StudyInstanceUID'))
@@ -70,32 +70,32 @@ if assoc.is_established and assoc2.is_established:
         #C-MOVE
         for study_uid in study_uid_lst:
 
-            ds2 = Dataset()
-            ds2.QueryRetrieveLevel = 'STUDY'
-            ds2.StudyInstanceUID = str(study_uid)
-            responses2 = assoc2.send_c_move(ds2, destination_pacs_ae_title, StudyRootQueryRetrieveInformationModelMove)
-            for (status2, identifier2) in responses2:
+            ds_c_move = Dataset()
+            ds_c_move.QueryRetrieveLevel = 'STUDY'
+            ds_c_move.StudyInstanceUID = str(study_uid)
+            responses_c_move = assoc_c_move.send_c_move(ds_c_move, destination_pacs_ae_title, StudyRootQueryRetrieveInformationModelMove)
+            for (status_c_move, identifier_c_move) in responses_c_move:
                 #status : Failure, Cancel, Warning, Success, Pending
-                if status2:
-                    if status2.Status == 0xFF00:
+                if status_c_move:
+                    if status_c_move.Status == 0xFF00:
                         print('Pending')
-                    elif status2.Status == 0x0000:
+                    elif status_c_move.Status == 0x0000:
                         print('Success')
-                        print('Number of Completed Sub-operations ' + str(status2.get(0x1021).value))
-                        f.write('Number of Completed Sub-operations ' + str(status2.get(0x1021).value) + ' ')
-                        f.write('Number of Failed Sub-operations ' + str(status2.get(0x1022).value) + ' ')
-                        f.write('Number of Warning Sub-operations ' + str(status2.get(0x1023).value) + ' ')
-                        if status2.get(0x1022).value != 0 or status2.get(0x1023).value != 0:
+                        print('Number of Completed Sub-operations ' + str(status_c_move.get(0x1021).value))
+                        f.write('Number of Completed Sub-operations ' + str(status_c_move.get(0x1021).value) + ' ')
+                        f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value) + ' ')
+                        f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + ' ')
+                        if status_c_move.get(0x1022).value != 0 or status_c_move.get(0x1023).value != 0:
                             f.write(date.strftime("%Y-%m-%d") +" "+ study_uid + " error")
-                            f.write('Number of Failed Sub-operations ' + str(status2.get(0x1022).value))
-                            f.write('Number of Warning Sub-operations ' + str(status2.get(0x1023).value) + "\r\n")
+                            f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value))
+                            f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + "\r\n")
                         else:
                             f.write(date.strftime("%Y-%m-%d") +" "+ study_uid + " Success\r\n")
                     else:
-                        print('status : 0x{0:04X}'.format(status2.Status))
-                        print(identifier2)
-                        print('Failed SOP Instance UID List ' + str(identifier2.get(0x00080058)))
-                        f.write(date.strftime("%Y-%m-%d") +" "+ study_uid + " Error" + 'Failed SOP Instance UID List ' + str(identifier2.get(0x00080058)) + "\r\n")
+                        print('status : 0x{0:04X}'.format(status_c_move.Status))
+                        print(identifier_c_move)
+                        print('Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)))
+                        f.write(date.strftime("%Y-%m-%d") +" "+ study_uid + " Error" + 'Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)) + "\r\n")
                 else:
                     print('Connection timed out, was aborted or received invalid response')
                     f.write(date.strftime("%Y-%m-%d") +" "+ study_uid + " Error\r\n")
@@ -103,8 +103,8 @@ if assoc.is_established and assoc2.is_established:
         f.close()
 
     # Release the association
-    assoc2.release()
-    assoc.release()
+    assoc_c_move.release()
+    assoc_c_find.release()
 else:
     print('Association rejected, aborted or never connected')
 
