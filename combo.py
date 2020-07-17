@@ -47,8 +47,7 @@ ds_c_find = Dataset()
 ds_c_find.QueryRetrieveLevel = 'STUDY'
 ds_c_find.StudyInstanceUID = ''
 
-# Associate with the peer AE at IP 127.0.0.1 and port 11112
-
+# Associate with the peer AE
 assoc_c_find = ae_c_find.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
 assoc_c_move = ae_c_move.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
 if assoc_c_find.is_established and assoc_c_move.is_established:
