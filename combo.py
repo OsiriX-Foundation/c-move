@@ -72,8 +72,9 @@ if assoc_c_find.is_established and assoc_c_move.is_established:
             ds_c_move = Dataset()
             ds_c_move.QueryRetrieveLevel = 'STUDY'
             ds_c_move.StudyInstanceUID = str(study_uid)
-            responses_c_move = assoc_c_move.send_c_move(ds_c_move, destination_pacs_ae_title, StudyRootQueryRetrieveInformationModelMove)
-            for (status_c_move, identifier_c_move) in responses_c_move:
+            try:
+                responses_c_move = assoc_c_move.send_c_move(ds_c_move, destination_pacs_ae_title, StudyRootQueryRetrieveInformationModelMove)
+                for (status_c_move, identifier_c_move) in responses_c_move:
                 #status : Failure, Cancel, Warning, Success, Pending
                 if status_c_move:
                     if status_c_move.Status == 0xFF00:
@@ -102,6 +103,9 @@ if assoc_c_find.is_established and assoc_c_move.is_established:
                     print('Connection timed out, was aborted or received invalid response')
                     f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error\r\n")
                     f.flush()
+            except RuntimeError:
+                f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " RuntimeError\r\n")
+                f.flush()
 
         f.close()
 
