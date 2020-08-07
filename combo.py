@@ -137,9 +137,11 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                     f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error\r\n")
                     f.flush()
         except RuntimeError:
+            print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " RuntimeError")
             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " RuntimeError\r\n")
             f.flush() 
         except ValueError:
+            print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " RuntimeError")
             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " ValueError\r\n")
             f.flush()
         finally:
