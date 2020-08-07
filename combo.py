@@ -84,20 +84,24 @@ if assoc_c_find.is_established and assoc_c_move.is_established:
                         f.write(str(datetime.datetime.now()) + ' Number of Completed Sub-operations ' + str(status_c_move.get(0x1021).value) + ' ')
                         f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value) + ' ')
                         f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + ' ')
+                        f.flush()
                         if status_c_move.get(0x1022).value != 0 or status_c_move.get(0x1023).value != 0:
                             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " error")
                             f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value))
                             f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + "\r\n")
                         else:
                             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Success\r\n")
+                        f.flush()
                     else:
                         print('status : 0x{0:04X}'.format(status_c_move.Status))
                         print(identifier_c_move)
                         print('Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)))
                         f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error" + 'Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)) + "\r\n")
+                        f.flush()
                 else:
                     print('Connection timed out, was aborted or received invalid response')
                     f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error\r\n")
+                    f.flush()
 
         f.close()
 
@@ -111,5 +115,6 @@ f = open("logs/empty_months.txt", "a")
 for file in os.listdir("/logs"):
     if file.startswith("log") and file.endswith(".txt") and os.stat("/logs/" + file).st_size == 0:
         f.write(file.replace("log","").replace(".txt","") + "\r\n")
+        f.flush()
         os.remove("/logs/" + file)
 f.close()
