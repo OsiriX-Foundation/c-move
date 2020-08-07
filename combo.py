@@ -86,14 +86,24 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
     #C-FIND
     ds_c_find.StudyDate =  date.strftime("%Y%m%d")
 
-    assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
-    responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
-    for (status_c_find, identifier_c_find) in responses_c_find:
-        if status_c_find.Status == 0xFF00:#Pending
-            print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
-            print('\tstudyUID: ' + identifier_c_find.get('StudyInstanceUID'))
-            study_uid_lst.append(identifier_c_find.get('StudyInstanceUID'))
-    assoc_c_find.release()
+    try:
+        assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
+        responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
+        for (status_c_find, identifier_c_find) in responses_c_find:
+            if status_c_find.Status == 0xFF00:#Pending
+                print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
+                print('\tstudyUID: ' + identifier_c_find.get('StudyInstanceUID'))
+                study_uid_lst.append(identifier_c_find.get('StudyInstanceUID'))
+    except RuntimeError:
+        print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
+        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError\r\n")
+        f.flush() 
+    except ValueError:
+        print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find ValueError")
+        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find ValueError\r\n")
+        f.flush()
+    finally:
+        assoc_c_find.release()
 
     #C-MOVE
     for study_uid in study_uid_lst:
@@ -139,7 +149,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " RuntimeError\r\n")
             f.flush() 
         except ValueError:
-            print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " RuntimeError")
+            print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " ValueError")
             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " ValueError\r\n")
             f.flush()
         finally:
