@@ -12,7 +12,6 @@ import functools
 import os
 
 def get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, ae_title):
-
     for i in range(3):
         assoc_c_find = ae_c_find.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
         if assoc_c_find.is_established:
@@ -28,7 +27,6 @@ def get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, ae_title
 
 
 def get_c_move_association(ae_c_move, source_pacs_ip, source_pacs_port, ae_title):
-
     for i in range(3):
         assoc_c_move = ae_c_move.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
         if assoc_c_move.is_established:
