@@ -137,8 +137,11 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                         stringStatus = '0x{0:04X}'.format(status_c_move.Status)
                         print('status : ' + stringStatus)
                         print(identifier_c_move)
-                        print('Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)))
-                        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error with status : " + stringStatus + ' Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)) + "\r\n")
+                        if identifier_c_move is not None:
+                            print('Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)))
+                            f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error with status : " + stringStatus + ' Failed SOP Instance UID List ' + str(identifier_c_move.get(0x00080058)) + "\r\n")
+                        else:
+                            f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Error with status : " + stringStatus + ' Failed SOP Instance UID List ' + "\r\n")
                         f.flush()
                 else:
                     print('Connection timed out, was aborted or received invalid response')
