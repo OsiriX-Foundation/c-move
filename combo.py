@@ -57,11 +57,11 @@ ae_c_move.add_requested_context(StudyRootQueryRetrieveInformationModelMove)
 
 arr = []
 for filename in os.listdir("logs"):
-if filename != "empty_months.txt":
-    with open("logs/"+filename) as f:
-        for line in f:
-            if "Error" in line:
-                arr.append(line.split()[2] + " " +line.split()[3])
+    if filename != "empty_months.txt":
+        with open("logs/"+filename) as f:
+            for line in f:
+                if "Error" in line:
+                    arr.append(line.split()[2] + " " +line.split()[3])
 
 arr = list(dict.fromkeys(arr))
 arr2 = {}
