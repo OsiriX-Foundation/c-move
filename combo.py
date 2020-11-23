@@ -1,6 +1,5 @@
 from pydicom.dataset import Dataset
 from pynetdicom import AE, debug_logger
-from pynetdicom.sop_class import StudyRootQueryRetrieveInformationModelFind
 from pynetdicom.sop_class import StudyRootQueryRetrieveInformationModelMove
 
 from dateutil.rrule import rrule, DAILY
@@ -10,20 +9,6 @@ import time
 import sys
 import functools
 import os
-
-def get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, ae_title):
-    for i in range(3):
-        assoc_c_find = ae_c_find.associate(source_pacs_ip, source_pacs_port, ae_title = source_pacs_ae_title)
-        if assoc_c_find.is_established:
-            return assoc_c_find
-        else:
-            if i != 2:
-                print(str(datetime.datetime.now()) +' Association (c_find) rejected, aborted or never connected (retry in 30 seconds)')
-                time.sleep(30)
-
-    print(str(datetime.datetime.now()) + ' Association (c_find) rejected, aborted or never connected')
-    sys.exit()
-
 
 
 def get_c_move_association(ae_c_move, source_pacs_ip, source_pacs_port, ae_title):
@@ -66,44 +51,38 @@ print("************************")
 #debug_logger()
 
 
-ae_c_find = AE()
-ae_c_find.add_requested_context(StudyRootQueryRetrieveInformationModelFind)
-
 ae_c_move = AE()
 ae_c_move.add_requested_context(StudyRootQueryRetrieveInformationModelMove)
 
-# Create our Identifier (query) dataset
-ds_c_find = Dataset()
-ds_c_find.QueryRetrieveLevel = 'STUDY'
-ds_c_find.StudyInstanceUID = ''
+
+arr = []
+for filename in os.listdir("logs"):
+if filename != "empty_months.txt":
+    with open("logs/"+filename) as f:
+        for line in f:
+            if "Error" in line:
+                arr.append(line.split()[2] + " " +line.split()[3])
+
+arr = list(dict.fromkeys(arr))
+arr2 = {}
+for a in arr:
+    if a.split()[0] in arr2.keys():
+        arr2[a.split()[0]].append(a.split()[1])
+    else:
+        arr2[a.split()[0]] = [a.split()[1]]
 
 
 for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
-    f = open("logs/log"+date.strftime("%Y-%m")+".txt", "a")
+    f = open("logs2/log"+date.strftime("%Y-%m")+".txt", "a")
 
+        
     study_uid_lst = []
-    #C-FIND
-    ds_c_find.StudyDate =  date.strftime("%Y%m%d")
+    if date.strftime("%Y-%m-%d") in arr2.keys():
+        study_uid_lst = arr2[date.strftime("%Y-%m-%d")]
+    else:
+        study_uid_lst = []
 
-    try:
-        assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
-        responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
-        for (status_c_find, identifier_c_find) in responses_c_find:
-            if status_c_find.Status == 0xFF00:#Pending
-                print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
-                print('\tstudyUID: ' + identifier_c_find.get('StudyInstanceUID'))
-                study_uid_lst.append(identifier_c_find.get('StudyInstanceUID'))
-    except RuntimeError:
-        print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
-        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError\r\n")
-        f.flush() 
-    except ValueError:
-        print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find ValueError")
-        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find ValueError\r\n")
-        f.flush()
-    finally:
-        assoc_c_find.release()
 
     #C-MOVE
     for study_uid in study_uid_lst:
@@ -160,12 +139,12 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
     f.close()
 
-f = open("logs/empty_months.txt", "a")
-for file in os.listdir("/logs"):
-    if file.startswith("log") and file.endswith(".txt") and os.stat("/logs/" + file).st_size == 0:
+f = open("logs2/empty_months.txt", "a")
+for file in os.listdir("/logs2"):
+    if file.startswith("log") and file.endswith(".txt") and os.stat("/logs2/" + file).st_size == 0:
         f.write(file.replace("log","").replace(".txt","") + "\r\n")
         f.flush()
-        os.remove("/logs/" + file)
+        os.remove("/logs2/" + file)
 f.close()
 
 print('End of script')
