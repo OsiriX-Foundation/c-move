@@ -82,8 +82,8 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
 #C-FIND
     ds_c_find = Dataset()
-    ds_c_find.StudyDate =  date.strftime("%Y%m%d")
-    ds_c_find.QueryRetrieveLevel = 'INSTANCES'
+    ds_c_find.StudyDate = date.strftime("%Y%m%d")
+    ds_c_find.QueryRetrieveLevel = 'SERIES'
 
     try:
         assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
