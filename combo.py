@@ -92,11 +92,14 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
         for (status_c_find, identifier_c_find) in responses_c_find:
             
             if status_c_find.Status == 0xFF00:#Pending
-                print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
-                print('\tstudyUID: ' + identifier_c_find.get('SeriesInstanceUID'))
+                #print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
+                #print('\tstudyUID: ' + identifier_c_find.get('SeriesInstanceUID'))
+                i=0
             else:
                 print("**************************************************************************************")
                 print(status_c_find.Status)
+                print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
+                print('\tseriesUID: ' + identifier_c_find.get('SeriesInstanceUID'))
     except RuntimeError:
         print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
         f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError\r\n")
