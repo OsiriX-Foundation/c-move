@@ -90,6 +90,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
         assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
         responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
         for (status_c_find, identifier_c_find) in responses_c_find:
+            print(status_c_find.Status)
             if status_c_find.Status == 0xFF00:#Pending
                 print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
                 print('\tstudyUID: ' + identifier_c_find.get('SeriesInstanceUID'))
