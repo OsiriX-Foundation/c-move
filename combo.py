@@ -84,7 +84,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
     ds_c_find = Dataset()
     ds_c_find.StudyDate = date.strftime("%Y%m%d")
     ds_c_find.QueryRetrieveLevel = 'INSTANCE'
-    ds_c_find.SeriesInstanceUID = ''
+    #ds_c_find.SeriesInstanceUID = ''
     ds_c_find.PixelData = ''
 
 
@@ -95,7 +95,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
             
             if status_c_find.Status == 0xFF00:#Pending
                 print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
-                print('\tstudyUID: ' + identifier_c_find.get('SeriesInstanceUID'))
+                print('\tstudyUID: ' + identifier_c_find.get('PixelData'))
             else:
                 print("**************************************************************************************")
                 print(status_c_find.Status)
