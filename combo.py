@@ -56,9 +56,9 @@ ae_c_move.add_requested_context(StudyRootQueryRetrieveInformationModelMove)
 
 
 arr = []
-for filename in os.listdir("logs"):
+for filename in os.listdir("logs2"):
     if filename != "empty_months.txt":
-        with open("logs/"+filename) as f:
+        with open("logs2/"+filename) as f:
             for line in f:
                 if "Error" in line:
                     arr.append(line.split()[2] + " " +line.split()[3])
@@ -74,7 +74,7 @@ for a in arr:
 
 for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
-    f = open("logs2/log"+date.strftime("%Y-%m")+".txt", "a")
+    f = open("logs3/log"+date.strftime("%Y-%m")+".txt", "a")
 
         
     study_uid_lst = []
@@ -139,12 +139,12 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
     f.close()
 
-f = open("logs2/empty_months.txt", "a")
-for file in os.listdir("/logs2"):
-    if file.startswith("log") and file.endswith(".txt") and os.stat("/logs2/" + file).st_size == 0:
+f = open("logs3/empty_months.txt", "a")
+for file in os.listdir("/logs3"):
+    if file.startswith("log") and file.endswith(".txt") and os.stat("/logs3/" + file).st_size == 0:
         f.write(file.replace("log","").replace(".txt","") + "\r\n")
         f.flush()
-        os.remove("/logs2/" + file)
+        os.remove("/logs3/" + file)
 f.close()
 
 print('End of script')
