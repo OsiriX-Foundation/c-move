@@ -84,6 +84,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
     ds_c_find = Dataset()
     ds_c_find.StudyDate = date.strftime("%Y%m%d")
     ds_c_find.QueryRetrieveLevel = 'SERIES'
+    ds_c_find.SeriesInstanceUID = ''
 
     try:
         assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
@@ -91,7 +92,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
         for (status_c_find, identifier_c_find) in responses_c_find:
             if status_c_find.Status == 0xFF00:#Pending
                 print(str(date.strftime("%Y-%m-%d")) + " (C-Find)")
-                print('\tstudyUID: ' + str(identifier_c_find))
+                print('\tstudyUID: ' + identifier_c_find.get('SeriesInstanceUID'))
     except RuntimeError:
         print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
         f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError\r\n")
