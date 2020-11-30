@@ -106,7 +106,7 @@ for filename in os.listdir("logspatientid"):
                             if status_c_find.Status == 0xFF00:#Pending
                                 if str(identifier_c_find.get('PatientName')) not in study_uid_lst[studyuid]:
                                     print("error")
-                                    f.write(str(datetime.datetime.now()) + " " + line[2] +" "+ studyuid + " ---" + str(identifier_c_find.get('PatientName')) + "---" + study_uid_lst[studyuid] +"\r\n")
+                                    f.write(str(datetime.datetime.now()) + " " + line[2] +" "+ studyuid + " ---" + str(identifier_c_find.get('PatientName')) + "---" + str(study_uid_lst[studyuid]) +"\r\n")
                     except RuntimeError:
                         print(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError")
                         f.write(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError\r\n")
