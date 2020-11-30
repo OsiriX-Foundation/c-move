@@ -59,7 +59,6 @@ ae_c_find.add_requested_context(StudyRootQueryRetrieveInformationModelFind)
 ds_c_find = Dataset()
 ds_c_find.QueryRetrieveLevel = 'STUDY'
 ds_c_find.PatientName = ''
-ds_c_find.PatientId = ''
 
 
 
@@ -100,6 +99,7 @@ for filename in os.listdir("logspatientid"):
                     ds_c_find1.QueryRetrieveLevel = 'STUDY'
                     ds_c_find1.StudyInstanceUID = studyuid
                     ds_c_find1.PatientName = ''
+                    ds_c_find1.PatientID = ''
                     try:
                         assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
                         responses_c_find = assoc_c_find.send_c_find(ds_c_find1, StudyRootQueryRetrieveInformationModelFind)
@@ -107,7 +107,7 @@ for filename in os.listdir("logspatientid"):
                             if status_c_find.Status == 0xFF00:#Pending
                                 if str(identifier_c_find.get('PatientName')) not in str(study_uid_lst[studyuid]):
                                     print("error")
-                                    f.write(str(datetime.datetime.now()) + " " + line[2] +" "+ studyuid + " " + str(identifier_c_find.get('PatientId')) + " ---" + str(identifier_c_find.get('PatientName')) + "---" + str(study_uid_lst[studyuid]) +"\r\n")
+                                    f.write(str(datetime.datetime.now()) + " " + line[2] +" "+ studyuid + " " + str(identifier_c_find.get('PatientID')) + " ___" + str(identifier_c_find.get('PatientName')) + "---" + str(study_uid_lst[studyuid]) +"\r\n")
                     except RuntimeError:
                         print(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError")
                         f.write(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError\r\n")
