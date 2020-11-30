@@ -78,11 +78,11 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
     ds_c_find.StudyDate =  date.strftime("%Y%m%d")
 
     try:
-        assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
+        assoc_c_find = get_c_find_association(ae_c_find, destination_pacs_ip, destination_pacs_port, destination_pacs_ae_title)
         responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
         for (status_c_find, identifier_c_find) in responses_c_find:
             if status_c_find.Status == 0xFF00:#Pending
-                print("S:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
+                print("D:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
                 study_uid_lst[identifier_c_find.get('StudyInstanceUID')] = identifier_c_find.get('PatientName') 
     except RuntimeError:
         print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
@@ -103,11 +103,11 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
         ds_c_find1.StudyInstanceUID = studyuid
         ds_c_find1.PatientName = ''
         try:
-            assoc_c_find = get_c_find_association(ae_c_find, destination_pacs_ip, destination_pacs_port, destination_pacs_ae_title)
+            assoc_c_find = get_c_find_association(ae_c_find, source_pacs_ip, source_pacs_port, source_pacs_ae_title)
             responses_c_find = assoc_c_find.send_c_find(ds_c_find1, StudyRootQueryRetrieveInformationModelFind)
             for (status_c_find, identifier_c_find) in responses_c_find:
                 if status_c_find.Status == 0xFF00:#Pending
-                    print("D:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
+                    print("S:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
                     if str(identifier_c_find.get('PatientName')) not in study_uid_lst[studyuid]:
                         f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid)
         except RuntimeError:
