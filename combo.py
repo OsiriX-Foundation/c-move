@@ -59,6 +59,7 @@ ae_c_find.add_requested_context(StudyRootQueryRetrieveInformationModelFind)
 ds_c_find = Dataset()
 ds_c_find.QueryRetrieveLevel = 'STUDY'
 ds_c_find.PatientName = ''
+ds_c_find.PatientID = ''
 
 
 
@@ -80,7 +81,7 @@ for filename in os.listdir("logspatientid"):
                     responses_c_find = assoc_c_find.send_c_find(ds_c_find, StudyRootQueryRetrieveInformationModelFind)
                     for (status_c_find, identifier_c_find) in responses_c_find:
                         if status_c_find.Status == 0xFF00:#Pending
-                            study_uid_lst[identifier_c_find.get('StudyInstanceUID')] = identifier_c_find.get('PatientName') 
+                            study_uid_lst[identifier_c_find.get('StudyInstanceUID')] = str(identifier_c_find.get('PatientName')) 
                 except RuntimeError:
                     print(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError")
                     f.write(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError\r\n")
@@ -104,9 +105,9 @@ for filename in os.listdir("logspatientid"):
                         responses_c_find = assoc_c_find.send_c_find(ds_c_find1, StudyRootQueryRetrieveInformationModelFind)
                         for (status_c_find, identifier_c_find) in responses_c_find:
                             if status_c_find.Status == 0xFF00:#Pending
-                                if str(identifier_c_find.get('PatientName')) not in study_uid_lst[studyuid]:
+                                if str(identifier_c_find.get('PatientName')) not in str(study_uid_lst[studyuid]):
                                     print("error")
-                                    f.write(str(datetime.datetime.now()) + " " + line[2] +" "+ studyuid + " ---" + str(identifier_c_find.get('PatientName')) + "---" + str(study_uid_lst[studyuid]) +"\r\n")
+                                    f.write(str(datetime.datetime.now()) + " " + line[2] +" "+ studyuid + " " + str(identifier_c_find.get('PatientID')) + " ---" + str(identifier_c_find.get('PatientName')) + "---" + str(study_uid_lst[studyuid]) +"\r\n")
                     except RuntimeError:
                         print(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError")
                         f.write(str(datetime.datetime.now()) + " " + line[2] +" c-find RuntimeError\r\n")
