@@ -110,7 +110,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                     print("S:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
                     if str(identifier_c_find.get('PatientName')) not in study_uid_lst[studyuid]:
                         print("error")
-                        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid)
+                        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid + "\r\n")
         except RuntimeError:
             print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError\r\n")
