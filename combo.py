@@ -109,6 +109,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                 if status_c_find.Status == 0xFF00:#Pending
                     print("S:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
                     if str(identifier_c_find.get('PatientName')) not in study_uid_lst[studyuid]:
+                        print("error")
                         f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid)
         except RuntimeError:
             print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
