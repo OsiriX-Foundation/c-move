@@ -16,6 +16,7 @@ AET = "PACS-JDWNRH"
 host_port = "pacs_arc_1:8080"
 
 logfile = open("logsdelete/log.txt", "a")
+logfilesuccess = open("logsdelete/success.txt", "a")
 
 
 arr = []
@@ -25,7 +26,7 @@ for filename in os.listdir("studylist"):
             for line in f:
                 arr.append(line.split()[3])
 
-cnt = 0
+
 for studyUID in arr:
 
     request_url = "http://"+host_port+"/dcm4chee-arc/aets/"+AET+"/rs/studies/"+studyUID+"/reject/113039%5EDCM"
@@ -33,8 +34,10 @@ for studyUID in arr:
     if response.status_code != 200:
         logfile.write(studyUID+" "+str(response.status_code)+"\n")
         logfile.flush()
-    cnt = cnt + 1
-    print(cnt)
+    else:
+        logfilesuccess.write(studyUID)
+        logfilesuccess.flush()
+
 
 
 
@@ -45,3 +48,4 @@ if response.status_code != 204:
     logfile.write("Last delete "+str(response.status_code))
 
 logfile.close()
+logfilesuccess.close()
