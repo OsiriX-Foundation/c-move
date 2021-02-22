@@ -25,7 +25,7 @@ for filename in os.listdir("studylist"):
             for line in f:
                 arr.append(line.split()[3])
 
-
+cnt = 0
 for studyUID in arr:
 
     request_url = "http://"+host_port+"/dcm4chee-arc/aets/"+AET+"/rs/studies/"+studyUID+"/reject/113039%5EDCM"
@@ -33,6 +33,8 @@ for studyUID in arr:
     if response.status_code != 200:
         logfile.write(studyUID+" "+str(response.status_code)+"\n")
         logfile.flush()
+    cnt = cnt + 1
+    print(cnt)
 
 
 
