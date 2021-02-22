@@ -14,8 +14,6 @@ import requests
 
 AET = "PACS-JDWNRH"
 host_port = "pacs_arc_1:8080"
-request_url = "http://"+host_port+"/dcm4chee-arc/aets/"+AET+"/rs/studies/"+studyUID+"/reject/113039%5EDCM"
-delete_url = "http://"+host_port+"/dcm4chee-arc/reject/113039%5EDCM?"
 
 logfile = open("logsdelete/log.txt", "a")
 
