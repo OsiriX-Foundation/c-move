@@ -28,8 +28,6 @@ for filename in os.listdir("studylist"):
 
 for studyUID in arr:
 
-    AET = "DCM4CHEE"
-    host_port = "localhost:8080"
     request_url = "http://"+host_port+"/dcm4chee-arc/aets/"+AET+"/rs/studies/"+studyUID+"/reject/113039%5EDCM"
     response = requests.post(request_url)
     if response.status_code != 200:
