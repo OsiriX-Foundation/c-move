@@ -31,7 +31,7 @@ for studyUID in arr:
     request_url = "http://"+host_port+"/dcm4chee-arc/aets/"+AET+"/rs/studies/"+studyUID+"/reject/113039%5EDCM"
     response = requests.post(request_url)
     if response.status_code != 200:
-        logfile.write(studyUID+" "+str(response.status_code))
+        logfile.write(studyUID+" "+str(response.status_code)+"\n")
         logfile.flush()
 
 
