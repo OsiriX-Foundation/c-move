@@ -35,7 +35,7 @@ for studyUID in arr:
         logfile.write(studyUID+" "+str(response.status_code)+"\n")
         logfile.flush()
     else:
-        logfilesuccess.write(studyUID)
+        logfilesuccess.write(studyUID+"\n")
         logfilesuccess.flush()
 
 
