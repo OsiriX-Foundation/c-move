@@ -50,7 +50,7 @@ ae_c_move.add_requested_context(StudyRootQueryRetrieveInformationModelMove)
 
 study_uid_lst = []
 for filename in os.listdir("logspatientid2"):
-    with open("logspatientid2/"+filename) as f:
+    with open("logspatientid/"+filename) as f:
         for line in f:
             study_uid_lst.append(line.split()[3])
 
