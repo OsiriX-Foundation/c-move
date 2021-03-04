@@ -17,6 +17,7 @@ host_port = "pacs_arc_1:8080"
 
 logfile = open("logsdelete2/log.txt", "a")
 logfilesuccess = open("logsdelete2/success.txt", "a")
+logdebug = open("logsdelete2/logdebug.txt", "a")
 
 
 
@@ -31,6 +32,8 @@ for filename in os.listdir("studylist"):
 for studyUID in arr:
 
     request_url = "http://"+host_port+"/dcm4chee-arc/aets/"+AET+"/rs/studies/"+studyUID+"/reject/113039%5EDCM"
+    logdebug.write(request_url+"\r\n")
+    logdebug.flush()
     
     response = requests.post(request_url)
     if response.status_code != 200:
