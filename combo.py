@@ -72,6 +72,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
     if date.strftime("%d") == "01": print(date.strftime("%Y-%m"))
 
     f = open("logspatientid/log"+date.strftime("%Y-%m")+".txt", "a")
+    f2 = open("logspatientid/OKlog"+date.strftime("%Y-%m")+".txt", "a")
 
     study_uid_lst = {}
     #C-FIND
@@ -110,7 +111,10 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                     print("S:" + str(date.strftime("%Y-%m-%d")) + " (C-Find)")
                     if str(identifier_c_find.get('PatientName')) not in study_uid_lst[studyuid]:
                         print("error")
-                        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid + " ---" + str(identifier_c_find.get('PatientName')) + "---" + study_uid_lst[studyuid] +"\r\n")
+                        f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid +"\r\n")
+                    else:
+                        f2.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ studyuid +"\r\n")
+                        f2.flush()
         except RuntimeError:
             print(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError")
             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" c-find RuntimeError\r\n")
@@ -122,6 +126,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
         finally:
             assoc_c_find.release()
     f.close()
+    f2.close
 
 
 f = open("logspatientid/empty_months.txt", "a")
