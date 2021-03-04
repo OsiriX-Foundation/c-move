@@ -40,7 +40,7 @@ for studyUID in arr:
         logfilesuccess.write(studyUID+"\n")
         logfilesuccess.flush()
 
-for studyUID in arr:
+"""for studyUID in arr:
 
     request_url = "http://"+host_port+"/dcm4chee-arc/aets/IOCM_EXPIRED/rs/studies/"+studyUID
     response = requests.delete(request_url)
@@ -49,7 +49,7 @@ for studyUID in arr:
         logfile.flush()
     else:
         logfilesuccess.write(studyUID+"\n")
-        logfilesuccess.flush()
+        logfilesuccess.flush()"""
 
 
 
