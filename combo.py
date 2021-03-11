@@ -81,6 +81,7 @@ ds_c_find.StudyInstanceUID = ''
 for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
     f = open("logs/log"+date.strftime("%Y-%m")+".txt", "a")
+    f_success = open("logs/success.txt", "a")
 
     study_uid_lst = []
     #C-FIND
@@ -126,6 +127,10 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                         f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value) + ' ')
                         f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + ' ')
                         f.flush()
+                        f_success.write(str(datetime.datetime.now()) + ' Number of Completed Sub-operations ' + str(status_c_move.get(0x1021).value) + ' ')
+                        f_success.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value) + ' ')
+                        f_success.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + ' ')
+                        f_success.flush()
                         if status_c_move.get(0x1022).value != 0 or status_c_move.get(0x1023).value != 0:
                             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " error")
                             f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value))
@@ -159,6 +164,7 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
             assoc_c_move.release()
 
     f.close()
+    f_success.close()
 
 f = open("logs/empty_months.txt", "a")
 for file in os.listdir("/logs"):
