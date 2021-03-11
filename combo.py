@@ -127,16 +127,15 @@ for date in rrule(DAILY, dtstart=start_date, until=end_date):
                         f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value) + ' ')
                         f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + ' ')
                         f.flush()
-                        f_success.write(str(datetime.datetime.now()) + ' Number of Completed Sub-operations ' + str(status_c_move.get(0x1021).value) + ' ')
-                        f_success.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value) + ' ')
-                        f_success.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + ' ')
-                        f_success.flush()
+
                         if status_c_move.get(0x1022).value != 0 or status_c_move.get(0x1023).value != 0:
                             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " error")
                             f.write('Number of Failed Sub-operations ' + str(status_c_move.get(0x1022).value))
                             f.write('Number of Warning Sub-operations ' + str(status_c_move.get(0x1023).value) + "\r\n")
                         else:
                             f.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Success\r\n")
+                            f_success.write(str(datetime.datetime.now()) + " " + date.strftime("%Y-%m-%d") +" "+ study_uid + " Success\r\n")
+                            f_success.flush()
                         f.flush()
                     else:
                         stringStatus = '0x{0:04X}'.format(status_c_move.Status)
