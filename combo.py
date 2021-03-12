@@ -48,17 +48,18 @@ if len(sys.argv) == 7:
     start_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
     s = str(sys.argv[2]).split("-")
     end_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
+    end_date = end_date + datetime.timedelta(days=1)
     source_pacs_ip = str(sys.argv[3])
     source_pacs_port = int(sys.argv[4])
     source_pacs_ae_title = str.encode(sys.argv[5])
     destination_pacs_ae_title = str.encode(sys.argv[6])
 else:
-    print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>")
+    print("Usage : <start_date yyyy-mm-dd> <end_date_include yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>")
     exit(2)
 
 
 print("************************")
-print("C-MOVE from " + start_date.strftime("%Y-%m-%d") + " to " + end_date.strftime("%Y-%m-%d"))
+print("C-MOVE from " + start_date.strftime("%Y-%m-%d") + " to " + end_date.strftime("%Y-%m-%d")) + " include"
 print("source pacs { ip :" + source_pacs_ip + " port :" + str(source_pacs_port) + " ae_title :" + str(source_pacs_ae_title) + "}")
 print("destination pacs { ae_title :" + str(destination_pacs_ae_title) + "}")
 print("************************")
