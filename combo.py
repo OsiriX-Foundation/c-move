@@ -48,7 +48,7 @@ if len(sys.argv) == 7:
     start_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
     s = str(sys.argv[2]).split("-")
     end_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
-    end_date = end_date + datetime.timedelta(days=1)
+    end_date_include = end_date + datetime.timedelta(days=1)
     source_pacs_ip = str(sys.argv[3])
     source_pacs_port = int(sys.argv[4])
     source_pacs_ae_title = str.encode(sys.argv[5])
@@ -59,7 +59,7 @@ else:
 
 
 print("************************")
-print("C-MOVE from " + start_date.strftime("%Y-%m-%d") + " to " + end_date.strftime("%Y-%m-%d")) + " include"
+print("C-MOVE from " + start_date.strftime("%Y-%m-%d") + " to " + end_date.strftime("%Y-%m-%d") + " include")
 print("source pacs { ip :" + source_pacs_ip + " port :" + str(source_pacs_port) + " ae_title :" + str(source_pacs_ae_title) + "}")
 print("destination pacs { ae_title :" + str(destination_pacs_ae_title) + "}")
 print("************************")
@@ -79,7 +79,7 @@ ds_c_find.QueryRetrieveLevel = 'STUDY'
 ds_c_find.StudyInstanceUID = ''
 
 
-for date in rrule(DAILY, dtstart=start_date, until=end_date):
+for date in rrule(DAILY, dtstart=start_date, until=end_date_include):
 
     f = open("logs/log"+date.strftime("%Y-%m")+".txt", "a")
     f_success = open("logs/success.txt", "a")
