@@ -48,13 +48,12 @@ if len(sys.argv) == 7:
     start_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
     s = str(sys.argv[2]).split("-")
     end_date = datetime.datetime(int(s[0]), int(s[1]), int(s[2]))
-    end_date_include = end_date + datetime.timedelta(days=1)
     source_pacs_ip = str(sys.argv[3])
     source_pacs_port = int(sys.argv[4])
     source_pacs_ae_title = str.encode(sys.argv[5])
     destination_pacs_ae_title = str.encode(sys.argv[6])
 else:
-    print("Usage : <start_date yyyy-mm-dd> <end_date_include yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>")
+    print("Usage : <start_date yyyy-mm-dd> <end_date yyyy-mm-dd> <source_pacs_ip> <source_pacs_port> <source_pacs_ae_title> <destination_pacs_ae_title>")
     exit(2)
 
 
@@ -79,7 +78,7 @@ ds_c_find.QueryRetrieveLevel = 'STUDY'
 ds_c_find.StudyInstanceUID = ''
 
 
-for date in rrule(DAILY, dtstart=start_date, until=end_date_include):
+for date in rrule(DAILY, dtstart=start_date, until=end_date):
 
     f = open("logs/log"+date.strftime("%Y-%m")+".txt", "a")
     f_success = open("logs/success.txt", "a")
